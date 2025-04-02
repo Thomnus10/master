@@ -32,9 +32,9 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             // Check the user's role and redirect accordingly
             $user = Auth::user();
-            if ($user->role == 'admin') {
+            if ($user->role_id == '1') {
                 return redirect()->route('admin.dashboard'); // Redirect to admin dashboard
-            } else {
+            } elseif ($user->role_id == '3') {
                 return redirect()->route('cashier.home'); // Redirect to cashier dashboard
             }
         } else {
