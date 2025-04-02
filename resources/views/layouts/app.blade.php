@@ -166,11 +166,6 @@
         </div>
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a href="{{ route('admin.home') }}" class="nav-link {{ request()->routeIs('admin.home') ? 'active' : '' }}">
-                    <i class="bi bi-house-door"></i> <span>Home</span>
-                </a>
-            </li>
-            <li class="nav-item">
                 <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                     <i class="bi bi-speedometer2"></i> <span>Dashboard</span>
                 </a>

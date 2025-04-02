@@ -15,9 +15,9 @@ Route::post('/users', [UserController::class, 'store']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::prefix('admin')->group(function () {
-    Route::get('/home', function () {
-        return view('admin.home');
-    })->name('admin.home');
+    //Route::get('/home', function () {
+      //  return view('admin.home');
+    //})->name('admin.home');
 
     Route::get('/inventory', function () {
         return view('admin.inventory');
