@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POS Groceries - Employee Management</title>
+    <title>POS Groceries - Supplier Management</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <style>
@@ -76,58 +76,61 @@
     <ul class="nav flex-column">
         <li class="nav-item"><a href="{{ route('admin.dashboard') }}" class="nav-link"><i class="bi bi-house-door"></i> Home</a></li>
         <li class="nav-item"><a href="{{ route('admin.dashboard') }}" class="nav-link"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-        <li class="nav-item"><a href="{{ route('admin.inventory') }}" class="nav-link"><i class="bi bi-box-seam"></i> Inventory</a></li>
+        <li class="nav-item"><a href="{{ route('admin.inventory') }}" class="nav-link active"><i class="bi bi-box-seam"></i> Inventory</a></li>
         <li class="nav-item"><a href="{{ route('admin.suppliers') }}" class="nav-link"><i class="bi bi-person"></i> Suppliers</a></li>
         <li class="nav-item"><a href="{{ route('admin.products') }}" class="nav-link"><i class="bi bi-box"></i> Products</a></li>
         <li class="nav-item"><a href="{{ route('admin.transaction') }}" class="nav-link"><i class="bi bi-receipt"></i> Transactions</a></li>
         <li class="nav-item"><a href="{{ route('admin.user') }}" class="nav-link"><i class="bi bi-people"></i> Users</a></li>
-        <!-- Added Purchase Sidebar Item -->
-        <li class="nav-item"><a href="{{ route('admin.purchase') }}" class="nav-link"><i class="bi bi-cart"></i> Purchase</a></li>
-        <!-- Added Expenses Sidebar Item -->
-        <li class="nav-item"><a href="{{ route('admin.expenses') }}" class="nav-link"><i class="bi bi-wallet2"></i> Expenses</a></li>
+        
+        <!-- New Expenses Sidebar Link -->
+        <li class="nav-item"><a href="{{ route('admin.expenses') }}" class="nav-link"><i class="bi bi-wallet"></i> Expenses</a></li>
+
+   
         <li class="nav-item"><a href="{{ route('logout') }}" class="nav-link"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
     </ul>
 </div>
 
-
     <!-- Main Content -->
     <div class="main-content">
         <div class="container">
-            <h1 class="brand-title">Employee Management</h1>
-            <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
-                <i class="bi bi-plus-circle"></i> Add Employee
+            <h1 class="brand-title">Supplier Management</h1>
+            <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addSupplierModal">
+                <i class="bi bi-plus-circle"></i> Add Supplier
             </button>
 
-            <input type="text" id="searchInput" class="form-control mb-3" placeholder="Search employee..."
+            <input type="text" id="searchInput" class="form-control mb-3" placeholder="Search supplier..."
                 onkeyup="searchTable()">
 
-            <!-- Employee Table -->
+            <!-- Supplier Table -->
             <table class="table table-striped table-bordered">
                 <thead class="table-success">
                     <tr>
-                        <th>Employee ID</th>
-                        <th>Employee Name</th>
-                        <th>Employee Position</th>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Telephone</th>
+                        <th>Address</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody id="employeeTable">
+                <tbody id="supplierTable">
                     <tr>
                         <td>1</td>
-                        <td>John Doe</td>
-                        <td>Manager</td>
+                        <td>Supplier A</td>
+                        <td>123456789</td>
+                        <td>Address A</td>
                         <td>
-                            <button class="btn btn-warning btn-sm" onclick="editEmployee(this)">Edit</button>
-                            <button class="btn btn-danger btn-sm" onclick="deleteEmployee(this)">Delete</button>
+                            <button class="btn btn-warning btn-sm" onclick="editSupplier(this)">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteSupplier(this)">Delete</button>
                         </td>
                     </tr>
                     <tr>
                         <td>2</td>
-                        <td>Jane Smith</td>
-                        <td>Sales Associate</td>
+                        <td>Supplier B</td>
+                        <td>987654321</td>
+                        <td>Address B</td>
                         <td>
-                            <button class="btn btn-warning btn-sm" onclick="editEmployee(this)">Edit</button>
-                            <button class="btn btn-danger btn-sm" onclick="deleteEmployee(this)">Delete</button>
+                            <button class="btn btn-warning btn-sm" onclick="editSupplier(this)">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteSupplier(this)">Delete</button>
                         </td>
                     </tr>
                 </tbody>
@@ -135,59 +138,67 @@
         </div>
     </div>
 
-    <!-- Modal for Adding Employee -->
-    <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel"
+    <!-- Modal for Adding Supplier -->
+    <div class="modal fade" id="addSupplierModal" tabindex="-1" aria-labelledby="addSupplierModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addEmployeeModalLabel">Add New Employee</h5>
+                    <h5 class="modal-title" id="addSupplierModalLabel">Add New Supplier</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="addEmployeeForm">
+                    <form id="addSupplierForm">
                         <div class="mb-3">
-                            <label for="employeeName" class="form-label">Employee Name</label>
-                            <input type="text" class="form-control" id="employeeName" placeholder="Enter employee name" required>
+                            <label for="supplierName" class="form-label">Supplier Name</label>
+                            <input type="text" class="form-control" id="supplierName" placeholder="Enter supplier name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="employeePosition" class="form-label">Position</label>
-                            <input type="text" class="form-control" id="employeePosition" placeholder="Enter position" required>
+                            <label for="supplierPhone" class="form-label">Telephone</label>
+                            <input type="text" class="form-control" id="supplierPhone" placeholder="Enter telephone number" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="supplierAddress" class="form-label">Address</label>
+                            <textarea class="form-control" id="supplierAddress" placeholder="Enter address" required></textarea>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="addEmployee()">Save Employee</button>
+                    <button type="button" class="btn btn-primary" onclick="addSupplier()">Save Supplier</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal for Editing Employee -->
-    <div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="editEmployeeModalLabel"
+    <!-- Modal for Editing Supplier -->
+    <div class="modal fade" id="editSupplierModal" tabindex="-1" aria-labelledby="editSupplierModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editEmployeeModalLabel">Edit Employee</h5>
+                    <h5 class="modal-title" id="editSupplierModalLabel">Edit Supplier</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="editEmployeeForm">
+                    <form id="editSupplierForm">
                         <div class="mb-3">
-                            <label for="editEmployeeName" class="form-label">Employee Name</label>
-                            <input type="text" class="form-control" id="editEmployeeName" placeholder="Enter employee name" required>
+                            <label for="editSupplierName" class="form-label">Supplier Name</label>
+                            <input type="text" class="form-control" id="editSupplierName" placeholder="Enter supplier name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="editEmployeePosition" class="form-label">Position</label>
-                            <input type="text" class="form-control" id="editEmployeePosition" placeholder="Enter position" required>
+                            <label for="editSupplierPhone" class="form-label">Telephone</label>
+                            <input type="text" class="form-control" id="editSupplierPhone" placeholder="Enter telephone number" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editSupplierAddress" class="form-label">Address</label>
+                            <textarea class="form-control" id="editSupplierAddress" placeholder="Enter address" required></textarea>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="updateEmployee()">Update Employee</button>
+                    <button type="button" class="btn btn-primary" onclick="updateSupplier()">Update Supplier</button>
                 </div>
             </div>
         </div>
@@ -199,7 +210,7 @@
 
         function searchTable() {
             let input = document.getElementById("searchInput").value.toLowerCase();
-            let table = document.getElementById("employeeTable");
+            let table = document.getElementById("supplierTable");
             let rows = table.getElementsByTagName("tr");
 
             for (let i = 0; i < rows.length; i++) {
@@ -217,46 +228,51 @@
             }
         }
 
-        function addEmployee() {
-            const employeeName = document.getElementById("employeeName").value;
-            const employeePosition = document.getElementById("employeePosition").value;
+        function addSupplier() {
+            const supplierName = document.getElementById("supplierName").value;
+            const supplierPhone = document.getElementById("supplierPhone").value;
+            const supplierAddress = document.getElementById("supplierAddress").value;
 
             const newRow = document.createElement("tr");
-            newRow.innerHTML = `<td>${document.getElementById("employeeTable").rows.length + 1}</td>
-                                <td>${employeeName}</td>
-                                <td>${employeePosition}</td>
+            newRow.innerHTML = `<td>${document.getElementById("supplierTable").rows.length + 1}</td>
+                                <td>${supplierName}</td>
+                                <td>${supplierPhone}</td>
+                                <td>${supplierAddress}</td>
                                 <td>
-                                    <button class="btn btn-warning btn-sm" onclick="editEmployee(this)">Edit</button>
-                                    <button class="btn btn-danger btn-sm" onclick="deleteEmployee(this)">Delete</button>
+                                    <button class="btn btn-warning btn-sm" onclick="editSupplier(this)">Edit</button>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteSupplier(this)">Delete</button>
                                 </td>`;
 
-            document.getElementById("employeeTable").appendChild(newRow);
-            document.querySelector("#addEmployeeModal .btn-close").click();
-            document.getElementById("addEmployeeForm").reset();
+            document.getElementById("supplierTable").appendChild(newRow);
+            document.querySelector("#addSupplierModal .btn-close").click();
+            document.getElementById("addSupplierForm").reset();
         }
 
-        function editEmployee(button) {
+        function editSupplier(button) {
             currentRow = button.closest("tr");
             const cells = currentRow.getElementsByTagName("td");
-            document.getElementById("editEmployeeName").value = cells[1].innerText;
-            document.getElementById("editEmployeePosition").value = cells[2].innerText;
+            document.getElementById("editSupplierName").value = cells[1].innerText;
+            document.getElementById("editSupplierPhone").value = cells[2].innerText;
+            document.getElementById("editSupplierAddress").value = cells[3].innerText;
 
-            const editModal = new bootstrap.Modal(document.getElementById('editEmployeeModal'));
+            const editModal = new bootstrap.Modal(document.getElementById('editSupplierModal'));
             editModal.show();
         }
 
-        function updateEmployee() {
-            const employeeName = document.getElementById("editEmployeeName").value;
-            const employeePosition = document.getElementById("editEmployeePosition").value;
+        function updateSupplier() {
+            const supplierName = document.getElementById("editSupplierName").value;
+            const supplierPhone = document.getElementById("editSupplierPhone").value;
+            const supplierAddress = document.getElementById("editSupplierAddress").value;
 
-            currentRow.cells[1].innerText = employeeName;
-            currentRow.cells[2].innerText = employeePosition;
+            currentRow.cells[1].innerText = supplierName;
+            currentRow.cells[2].innerText = supplierPhone;
+            currentRow.cells[3].innerText = supplierAddress;
 
-            document.querySelector("#editEmployeeModal .btn-close").click();
-            document.getElementById("editEmployeeForm").reset();
+            document.querySelector("#editSupplierModal .btn-close").click();
+            document.getElementById("editSupplierForm").reset();
         }
 
-        function deleteEmployee(button) {
+        function deleteSupplier(button) {
             const row = button.closest("tr");
             row.parentNode.removeChild(row);
         }

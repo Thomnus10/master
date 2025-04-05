@@ -92,14 +92,12 @@
             background-color: #1E8E3E;
         }
 
-        /* Hide text when sidebar is collapsed */
         .sidebar.collapsed .nav-link span {
             opacity: 0;
             width: 0;
             transition: opacity 0.2s ease-in-out, width 0.2s ease-in-out;
         }
 
-        /* Center icons properly in collapsed mode */
         .sidebar.collapsed .nav-link {
             justify-content: center;
             padding: 12px 0;
@@ -127,12 +125,10 @@
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        /* Adjust content margin when sidebar is collapsed */
         .sidebar.collapsed + .main-content {
             margin-left: 70px;
         }
 
-        /* Mobile Responsive */
         @media (max-width: 768px) {
             .sidebar {
                 width: 70px;
@@ -159,48 +155,65 @@
     </style>
 </head>
 <body>
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <button class="toggle-btn" onclick="toggleSidebar()"><i class="bi bi-chevron-left"></i></button>
-            <span>@yield('title', 'Admin Panel')</span>
-        </div>
-        <ul class="nav flex-column">
-            <li class="nav-item">
-                <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                    <i class="bi bi-speedometer2"></i> <span>Dashboard</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('admin.inventory') }}" class="nav-link {{ request()->routeIs('admin.inventory') ? 'active' : '' }}">
-                    <i class="bi bi-box-seam"></i> <span>Inventory</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('admin.transaction') }}" class="nav-link {{ request()->routeIs('admin.transaction') ? 'active' : '' }}">
-                    <i class="bi bi-receipt"></i> <span>Transaction</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('admin.user') }}" class="nav-link {{ request()->routeIs('admin.user') ? 'active' : '' }}">
-                    <i class="bi bi-people"></i> <span>User</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('admin.employee') }}" class="nav-link {{ request()->routeIs('admin.employee') ? 'active' : '' }}">
-                    <i class="bi bi-person-badge"></i> <span>Employee</span>
-                </a>
-            </li>
-            <!-- Add the Logout Form -->
-            <li class="nav-item">
-                <form action="{{ route('logout') }}" method="POST" class="nav-link d-flex align-items-center">
-                    @csrf
-                    <button type="submit" class="btn btn-link text-white" style="border: none; background: none;">
-                        <i class="bi bi-box-arrow-right"></i> <span>Logout</span>
-                    </button>
-                </form>
-            </li>
-        </ul>
-    </div>
+<div class="sidebar">
+    <h4>POS Groceries</h4>
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a href="{{ route('admin.dashboard') }}" class="nav-link">
+                <i class="bi bi-house-door"></i> Home
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('admin.dashboard') }}" class="nav-link">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('admin.inventory') }}" class="nav-link">
+                <i class="bi bi-box-seam"></i> Inventory
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('admin.suppliers') }}" class="nav-link">
+                <i class="bi bi-person"></i> Suppliers
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('admin.products') }}" class="nav-link">
+                <i class="bi bi-box"></i> Products
+            </a>
+        </li>
+        
+        <!-- Purchase Section -->
+        <li class="nav-item">
+            <a href="{{ route('admin.purchase') }}" class="nav-link">
+                <i class="bi bi-cart"></i> Purchase
+            </a>
+        </li>
+        
+                <li class="nav-item">
+            <a href="{{ route('admin.expenses.list') }}" class="nav-link">
+                <i class="bi bi-file-earmark-text"></i> Expenses
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('admin.transaction') }}" class="nav-link">
+                <i class="bi bi-receipt"></i> Transactions
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('admin.user') }}" class="nav-link">
+                <i class="bi bi-people"></i> Users
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('logout') }}" class="nav-link">
+                <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
+        </li>
+    </ul>
+</div>
 
     <div class="main-content">
         @yield('content')

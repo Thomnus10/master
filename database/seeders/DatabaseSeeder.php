@@ -6,11 +6,14 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Product; // Import Product model to use in seeding
 
 class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
+     *
+     * @return void
      */
     public function run(): void
     {
@@ -66,6 +69,11 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ]
+        ]);
+
+        // Now, call the ProductSeeder to insert product data
+        $this->call([
+            ProductSeeder::class, // This will call the ProductSeeder class
         ]);
     }
 }

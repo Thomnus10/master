@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POS Groceries - Inventory</title>
+    <title>POS Groceries - Purchase</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <style>
@@ -93,84 +93,90 @@
 <!-- Main Content -->
 <div class="main-content">
     <div class="container">
-        <h1 class="brand-title">Inventory Management</h1>
-        <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addProductModal">
-            <i class="bi bi-plus-circle"></i> Add Product
+        <h1 class="brand-title">Purchase Management</h1>
+        <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addPurchaseModal">
+            <i class="bi bi-plus-circle"></i> Add Purchase
         </button>
 
-        <input type="text" id="searchInput" class="form-control mb-3" placeholder="Search product..."
-            onkeyup="searchTable()">
+        <input type="text" id="searchInput" class="form-control mb-3" placeholder="Search purchase..." onkeyup="searchTable()">
 
-        <!-- Inventory Table -->
+        <!-- Purchase Table -->
         <table class="table table-striped table-bordered">
             <thead class="table-success">
                 <tr>
-                    <th>ID</th>
+                    <th>Purchase ID</th>
+                    <th>Supplier</th>
                     <th>Product Name</th>
-                    <th>Category</th>
-                    <th>Stock</th>
+                    <th>Quantity</th>
                     <th>Price</th>
+                    <th>Date of Purchase</th>
                 </tr>
             </thead>
-            <tbody id="inventoryTable">
+            <tbody id="purchaseTable">
                 <tr>
                     <td>1</td>
+                    <td>ABC Supplies</td>
                     <td>Rice</td>
-                    <td>Grains</td>
                     <td>100</td>
                     <td>₱50</td>
+                    <td>2025-04-01</td>
                 </tr>
                 <tr>
                     <td>2</td>
+                    <td>XYZ Supplies</td>
                     <td>Milk</td>
-                    <td>Dairy</td>
                     <td>50</td>
                     <td>₱70</td>
+                    <td>2025-04-02</td>
                 </tr>
                 <tr>
                     <td>3</td>
+                    <td>Fresh Farms</td>
                     <td>Eggs</td>
-                    <td>Poultry</td>
                     <td>200</td>
                     <td>₱10</td>
+                    <td>2025-04-03</td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
 
-<!-- Modal for Adding Product -->
-<div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel"
-    aria-hidden="true">
+<!-- Modal for Adding Purchase -->
+<div class="modal fade" id="addPurchaseModal" tabindex="-1" aria-labelledby="addPurchaseModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addProductModalLabel">Add New Product</h5>
+                <h5 class="modal-title" id="addPurchaseModalLabel">Add New Purchase</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="addProductForm">
+                <form id="addPurchaseForm">
                     <div class="mb-3">
-                        <label for="productName" class="form-label">Product Name</label>
-                        <input type="text" class="form-control" id="productName" placeholder="Enter product name" required>
+                        <label for="supplier" class="form-label">Supplier</label>
+                        <input type="text" class="form-control" id="supplier" placeholder="Enter supplier name" required>
                     </div>
                     <div class="mb-3">
-                        <label for="category" class="form-label">Category</label>
-                        <input type="text" class="form-control" id="category" placeholder="Enter category" required>
+                        <label for="product" class="form-label">Product Name</label>
+                        <input type="text" class="form-control" id="product" placeholder="Enter product name" required>
                     </div>
                     <div class="mb-3">
-                        <label for="stock" class="form-label">Stock</label>
-                        <input type="number" class="form-control" id="stock" placeholder="Enter stock quantity" min="0" required>
+                        <label for="quantity" class="form-label">Quantity</label>
+                        <input type="number" class="form-control" id="quantity" placeholder="Enter quantity" min="0" required>
                     </div>
                     <div class="mb-3">
                         <label for="price" class="form-label">Price</label>
                         <input type="number" class="form-control" id="price" placeholder="Enter price" min="0" step="0.01" required>
                     </div>
+                    <div class="mb-3">
+                        <label for="date" class="form-label">Date of Purchase</label>
+                        <input type="date" class="form-control" id="date" required>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="addProduct()">Save Product</button>
+                <button type="button" class="btn btn-primary" onclick="addPurchase()">Save Purchase</button>
             </div>
         </div>
     </div>
@@ -180,7 +186,7 @@
 <script>
     function searchTable() {
         let input = document.getElementById("searchInput").value.toLowerCase();
-        let table = document.getElementById("inventoryTable");
+        let table = document.getElementById("purchaseTable");
         let rows = table.getElementsByTagName("tr");
 
         for (let i = 0; i < rows.length; i++) {
@@ -198,43 +204,47 @@
         }
     }
 
-    function addProduct() {
-        const productName = document.getElementById("productName").value;
-        const category = document.getElementById("category").value;
-        const stock = document.getElementById("stock").value;
+    function addPurchase() {
+        const supplier = document.getElementById("supplier").value;
+        const product = document.getElementById("product").value;
+        const quantity = document.getElementById("quantity").value;
         const price = document.getElementById("price").value;
+        const date = document.getElementById("date").value;
 
         // Get the table body and create a new row
-        const tableBody = document.getElementById("inventoryTable");
+        const tableBody = document.getElementById("purchaseTable");
         const newRow = document.createElement("tr");
 
         // Create cells with the input data
         const idCell = document.createElement("td");
         idCell.innerText = tableBody.rows.length + 1; // Automatically increment ID
-        const nameCell = document.createElement("td");
-        nameCell.innerText = productName;
-        const categoryCell = document.createElement("td");
-        categoryCell.innerText = category;
-        const stockCell = document.createElement("td");
-        stockCell.innerText = stock;
+        const supplierCell = document.createElement("td");
+        supplierCell.innerText = supplier;
+        const productCell = document.createElement("td");
+        productCell.innerText = product;
+        const quantityCell = document.createElement("td");
+        quantityCell.innerText = quantity;
         const priceCell = document.createElement("td");
         priceCell.innerText = `₱${parseFloat(price).toFixed(2)}`;
+        const dateCell = document.createElement("td");
+        dateCell.innerText = date;
 
         // Append all cells to the new row
         newRow.appendChild(idCell);
-        newRow.appendChild(nameCell);
-        newRow.appendChild(categoryCell);
-        newRow.appendChild(stockCell);
+        newRow.appendChild(supplierCell);
+        newRow.appendChild(productCell);
+        newRow.appendChild(quantityCell);
         newRow.appendChild(priceCell);
+        newRow.appendChild(dateCell);
 
         // Append the new row to the table
         tableBody.appendChild(newRow);
 
-        // Close the modal after adding the product
-        document.querySelector("#addProductModal .btn-close").click();
+        // Close the modal after adding the purchase
+        document.querySelector("#addPurchaseModal .btn-close").click();
 
         // Clear the input fields
-        document.getElementById("addProductForm").reset();
+        document.getElementById("addPurchaseForm").reset();
     }
 </script>
 

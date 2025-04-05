@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POS Groceries - Inventory</title>
+    <title>POS Groceries - Product</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <style>
@@ -89,11 +89,10 @@
     </ul>
 </div>
 
-
 <!-- Main Content -->
 <div class="main-content">
     <div class="container">
-        <h1 class="brand-title">Inventory Management</h1>
+        <h1 class="brand-title">Product</h1>
         <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addProductModal">
             <i class="bi bi-plus-circle"></i> Add Product
         </button>
@@ -101,7 +100,6 @@
         <input type="text" id="searchInput" class="form-control mb-3" placeholder="Search product..."
             onkeyup="searchTable()">
 
-        <!-- Inventory Table -->
         <table class="table table-striped table-bordered">
             <thead class="table-success">
                 <tr>
@@ -110,6 +108,7 @@
                     <th>Category</th>
                     <th>Stock</th>
                     <th>Price</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody id="inventoryTable">
@@ -119,6 +118,10 @@
                     <td>Grains</td>
                     <td>100</td>
                     <td>₱50</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm">Edit</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteProduct(this)">Delete</button>
+                    </td>
                 </tr>
                 <tr>
                     <td>2</td>
@@ -126,6 +129,10 @@
                     <td>Dairy</td>
                     <td>50</td>
                     <td>₱70</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm">Edit</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteProduct(this)">Delete</button>
+                    </td>
                 </tr>
                 <tr>
                     <td>3</td>
@@ -133,6 +140,10 @@
                     <td>Poultry</td>
                     <td>200</td>
                     <td>₱10</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm">Edit</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteProduct(this)">Delete</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -149,22 +160,22 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="addProductForm">
+                <form>
                     <div class="mb-3">
                         <label for="productName" class="form-label">Product Name</label>
-                        <input type="text" class="form-control" id="productName" placeholder="Enter product name" required>
+                        <input type="text" class="form-control" id="productName" placeholder="Enter product name">
                     </div>
                     <div class="mb-3">
                         <label for="category" class="form-label">Category</label>
-                        <input type="text" class="form-control" id="category" placeholder="Enter category" required>
+                        <input type="text" class="form-control" id="category" placeholder="Enter category">
                     </div>
                     <div class="mb-3">
                         <label for="stock" class="form-label">Stock</label>
-                        <input type="number" class="form-control" id="stock" placeholder="Enter stock quantity" min="0" required>
+                        <input type="number" class="form-control" id="stock" placeholder="Enter stock quantity">
                     </div>
                     <div class="mb-3">
                         <label for="price" class="form-label">Price</label>
-                        <input type="number" class="form-control" id="price" placeholder="Enter price" min="0" step="0.01" required>
+                        <input type="number" class="form-control" id="price" placeholder="Enter price">
                     </div>
                 </form>
             </div>
@@ -208,7 +219,7 @@
         const tableBody = document.getElementById("inventoryTable");
         const newRow = document.createElement("tr");
 
-        // Create cells with the input data
+        // Create table cells with the input data
         const idCell = document.createElement("td");
         idCell.innerText = tableBody.rows.length + 1; // Automatically increment ID
         const nameCell = document.createElement("td");
@@ -218,7 +229,14 @@
         const stockCell = document.createElement("td");
         stockCell.innerText = stock;
         const priceCell = document.createElement("td");
-        priceCell.innerText = `₱${parseFloat(price).toFixed(2)}`;
+        priceCell.innerText = `₱${price}`;
+
+        // Add action buttons for editing and deleting
+        const actionCell = document.createElement("td");
+        actionCell.innerHTML = `
+            <button class="btn btn-warning btn-sm">Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteProduct(this)">Delete</button>
+        `;
 
         // Append all cells to the new row
         newRow.appendChild(idCell);
@@ -226,15 +244,19 @@
         newRow.appendChild(categoryCell);
         newRow.appendChild(stockCell);
         newRow.appendChild(priceCell);
+        newRow.appendChild(actionCell);
 
         // Append the new row to the table
         tableBody.appendChild(newRow);
 
         // Close the modal after adding the product
         document.querySelector("#addProductModal .btn-close").click();
+    }
 
-        // Clear the input fields
-        document.getElementById("addProductForm").reset();
+    function deleteProduct(button) {
+        // Remove the row from the table
+        const row = button.closest("tr");
+        row.parentNode.removeChild(row);
     }
 </script>
 
