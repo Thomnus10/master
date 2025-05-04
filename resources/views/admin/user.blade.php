@@ -5,7 +5,7 @@
 @section('content')
 <div class="container">
     <h2 class="mb-4">Users</h2>
-    <a href="{{ route('users.users_create') }}" class="btn btn-success mb-3">Add User</a>
+    <a href="{{ route('users.users_create') }}" class="btn btn-primary mb-3">Add User</a>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -15,7 +15,7 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Name</th>
+                <th>Username</th>
                 <th>Email</th>
                 <th>Actions</th>
             </tr>
@@ -24,7 +24,7 @@
             @foreach($users as $user)
             <tr>
                 <td>{{ $user->id }}</td>
-                <td>{{ $user->name }}</td>
+                <td>{{ $user->username }}</td>
                 <td>{{ $user->email }}</td>
                 <td>
                     <a href="{{ route('users.users_edit', $user->id) }}" class="btn btn-warning btn-sm">Edit</a>

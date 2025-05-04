@@ -1,194 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Admin Panel')</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #e8f5e9;
-            color: #2E7D32;
-            transition: margin-left 0.3s ease-in-out;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simple POS Layout</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      color: #333;
+    }
 
-        .sidebar {
-            width: 250px;
-            height: 100vh;
-            background: linear-gradient(180deg, #1B5E20, #388E3C);
-            position: fixed;
-            top: 0;
-            left: 0;
-            padding: 20px;
-            color: white;
-            transition: width 0.3s ease-in-out;
-            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-        }
+    header, footer {
+      background: #13213C;
+      color: #fff;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        .sidebar.collapsed {
-            width: 70px;
-        }
+    main {
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+    }
 
-        .sidebar-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            transition: padding 0.3s;
-        }
+    .products, .cart {
+      background: #fff;
+      padding: 15px;
+      border-radius: 5px;
+    }
 
-        .toggle-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
+    .products {
+      flex: 2;
+    }
 
-        .sidebar.collapsed .toggle-btn {
-            transform: rotate(180deg);
-        }
+    .cart {
+      flex: 1;
+    }
 
-        .sidebar-header span {
-            transition: opacity 0.3s ease-in-out, margin-left 0.3s ease-in-out;
-        }
+    .product, .cart-item {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+    }
 
-        .sidebar.collapsed .sidebar-header span {
-            opacity: 0;
-            margin-left: -20px;
-        }
+    .product-name, .cart-item-name {
+      font-weight: bold;
+    }
 
-        .nav-link {
-            color: white;
-            font-weight: 500;
-            padding: 12px 15px;
-            transition: 0.3s;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            white-space: nowrap;
-        }
+    .actions {
+      margin-top: 15px;
+      display: flex;
+      justify-content: space-between;
+    }
 
-        .nav-link i {
-            font-size: 1.4rem;
-            min-width: 30px;
-            text-align: center;
-            transition: margin-left 0.3s ease-in-out;
-        }
+    button {
+      padding: 8px 12px;
+      border: none;
+      background: #FCA311;
+      color: #000;
+      cursor: pointer;
+      border-radius: 4px;
+    }
 
-        .nav-link:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-            transform: none;
-            color: #FFD700 !important;
-        }
-
-        .nav-link.active {
-            background-color: #1E8E3E;
-        }
-
-        /* Hide text when sidebar is collapsed */
-        .sidebar.collapsed .nav-link span {
-            opacity: 0;
-            width: 0;
-            transition: opacity 0.2s ease-in-out, width 0.2s ease-in-out;
-        }
-
-        /* Center icons properly in collapsed mode */
-        .sidebar.collapsed .nav-link {
-            justify-content: center;
-            padding: 12px 0;
-        }
-
-        .sidebar.collapsed .nav-link i {
-            margin-left: 0;
-        }
-
-        .main-content {
-            margin-left: 250px;
-            padding: 20px;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            transition: margin-left 0.3s ease-in-out;
-        }
-
-        .brand-title {
-            font-size: 3rem;
-            font-weight: bold;
-            color: #1B5E20;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Adjust content margin when sidebar is collapsed */
-        .sidebar.collapsed + .main-content {
-            margin-left: 70px;
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 70px;
-                padding: 10px;
-            }
-
-            .sidebar-header span {
-                display: none;
-            }
-
-            .main-content {
-                margin-left: 70px;
-            }
-
-            .nav-link {
-                justify-content: center;
-                padding: 10px;
-            }
-
-            .nav-link span {
-                display: none;
-            }
-        }
-    </style>
+    input[type="text"] {
+      padding: 8px;
+      width: 100%;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+    }
+  </style>
 </head>
 <body>
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <button class="toggle-btn" onclick="toggleSidebar()"><i class="bi bi-chevron-left"></i></button>
-            <span>@yield('title', 'Admin Panel')</span>
-        </div>
-        <ul class="nav flex-column">
-            
-            <!-- Add the Logout Form -->
-            <li class="nav-item">
-                <form action="{{ route('logout') }}" method="POST" class="nav-link d-flex align-items-center">
-                    @csrf
-                    <button type="submit" class="btn btn-link text-white" style="border: none; background: none;">
-                        <i class="bi bi-box-arrow-right"></i> <span>Logout</span>
-                    </button>
-                </form>
-            </li>
-        </ul>
+  <header>
+    <div>Simple POS</div>
+    <div>Cashier: John Doe</div>
+  </header>
+
+  <main>
+    <div class="products">
+      <input type="text" placeholder="Search products..." />
+      <div class="product">
+        <div class="product-name">Cappuccino</div>
+        <div>$4.50</div>
+      </div>
+      <div class="product">
+        <div class="product-name">Muffin</div>
+        <div>$3.50</div>
+      </div>
     </div>
 
-    <div class="main-content">
-        @yield('content')
+    <div class="cart">
+      <div class="cart-item">
+        <div class="cart-item-name">Cappuccino x1</div>
+        <div>$4.50</div>
+      </div>
+      <div class="cart-item">
+        <div class="cart-item-name">Muffin x2</div>
+        <div>$7.00</div>
+      </div>
+      <div class="actions">
+        <div><strong>Total: $11.50</strong></div>
+        <button>Checkout</button>
+      </div>
     </div>
+  </main>
 
-    <script>
-        function toggleSidebar() {
-            let sidebar = document.getElementById("sidebar");
-            sidebar.classList.toggle("collapsed");
-        }
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <footer>
+    <div>Terminal #3</div>
+    <div>Order #1052</div>
+  </footer>
 </body>
 </html>

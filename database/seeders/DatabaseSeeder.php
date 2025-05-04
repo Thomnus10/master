@@ -17,20 +17,19 @@ class DatabaseSeeder extends Seeder
         // Seed roles
         DB::table('roles')->insert([
             ['id' => 1, 'role_name' => 'admin'],
-            ['id' => 2, 'role_name' => 'owner'],
-            ['id' => 3, 'role_name' => 'cashier'],
+            ['id' => 2, 'role_name' => 'cashier'],
         ]);
 
         // Seed positions
         DB::table('positions')->insert([
-            ['id' => 1, 'position_name' => 'owner'],
-            ['id' => 2, 'position_name' => 'manager'],
-            ['id' => 3, 'position_name' => 'cashier'],
+            ['id' => 1, 'position_name' => 'manager'],
+            ['id' => 2, 'position_name' => 'cashier'],
+            ['id' => 3, 'position_name' => 'loader'],
         ]);
 
         // Create admin user (linked to John Doe)
         $adminUser = User::create([
-            'name' => 'John Doe',
+            
             'username' => 'admin',
             'password' => Hash::make('admin'),
             'email' => 'admin@email.com',
@@ -39,29 +38,29 @@ class DatabaseSeeder extends Seeder
 
         // Create cashier user (linked to Jane Smith)
         $cashierUser = User::create([
-            'name' => 'Jane Smith',
+            
             'username' => 'cashier',
             'password' => Hash::make('cashier'),
             'email' => 'cashier@email.com',
-            'role_id' => 3, // Cashier role
+            'role_id' => 2, // Cashier role
         ]);
 
         // Seed employees, linking them to the correct users
         DB::table('employees')->insert([
             [
-                'Fname' => 'John',
+                'Fname' => 'Owin',
                 'Mname' => 'A',
-                'Lname' => 'Doe',
-                'position_id' => 2, // Manager
+                'Lname' => 'Albacite',
+                'position_id' => 1, // Manager
                 'user_id' => $adminUser->id, // Linked to admin user
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'Fname' => 'Jane',
+                'Fname' => 'Darren',
                 'Mname' => 'B',
-                'Lname' => 'Smith',
-                'position_id' => 3, // Cashier
+                'Lname' => 'Nenel',
+                'position_id' => 2, // Cashier
                 'user_id' => $cashierUser->id, // Linked to cashier user
                 'created_at' => now(),
                 'updated_at' => now(),

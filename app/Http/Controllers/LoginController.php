@@ -34,7 +34,7 @@ class LoginController extends Controller
             $user = Auth::user();
             if ($user->role_id == '1') {
                 return redirect()->route('admin.dashboard'); // Redirect to admin dashboard
-            } elseif ($user->role_id == '3') {
+            } elseif ($user->role_id == '2') {
                 return redirect()->route('cashier.home'); // Redirect to cashier dashboard
             }
         } else {
