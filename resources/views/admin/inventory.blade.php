@@ -35,7 +35,7 @@
                 <tr>
                     <!-- Accessing product details through the inventory -->
                     <td>{{ $inventory->product->name ?? 'N/A' }}</td>
-                    <td>{{ $inventory->quantity }}</td>
+                    <td>{{ $inventory->quantity }} {{$inventory->product->unit->type}}</td>
                     <td>{{ \Carbon\Carbon::parse($inventory->expiration_date)->format('F d, Y') }}</td>
                     <td>{{ $inventory->product->category->name ?? 'N/A' }}</td> <!-- Displaying Category Name -->
                     <td>{{ $inventory->product->description ?? 'N/A' }}</td>

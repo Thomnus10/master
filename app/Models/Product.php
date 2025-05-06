@@ -33,4 +33,15 @@ class Product extends Model
             ->withPivot('quantity', 'price')
             ->withTimestamps();
     }
+    // Product.php
+    public function inventories()
+    {
+        return $this->hasMany(Inventory::class);
+    }
+    // app/Models/Product.php
+
+    public function totalInventoryQuantity()
+    {
+        return $this->inventories()->sum('quantity');
+    }
 }

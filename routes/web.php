@@ -8,6 +8,10 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\CartController;
+
+
 
 
 Route::get('/', function () {
@@ -68,8 +72,29 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 });
 
-// Cashier Routes
+// // Cashier Routes
 Route::prefix('cashier')->middleware('cashier')->group(function () {
-    Route::get('/home', fn() => view('cashier.home'))->name('cashier.home');
-    // More cashier routes here
+    // Order management routes
+    Route::get('/index', [OrderController::class, 'index'])->name('cashier.index');
+    Route::get('/orders/create', [OrderController::class, 'create'])->name('cashier.create');
+    Route::post('/orders', [OrderController::class, 'store'])->name('cashier.store');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('cashier.show');
+    Route::get('/orders/{order}/edit', [OrderController::class, 'edit'])->name('cashier.edit');
+    Route::put('/orders/{order}', [OrderController::class, 'update'])->name('cashier.update');
+    Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('cashier.destroy');
+
+    // Cart (POS) routes handled by CartController
+    Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.addToCart');
+    Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.removeFromCart');
+    Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+    Route::post('/cart/update-quantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
+    Route::post('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clearCart');
+    Route::post('/cart/discount', [CartController::class, 'applyDiscount'])->name('cart.applyDiscount');
+    Route::post('/cart/scan', [CartController::class, 'scanProductId'])->name('cart.scanProductId');
+    Route::post('/orders/{order}/payment', [CartController::class, 'processPayment'])->name('cart.processPayment');
 });
+
+// Route::prefix('cashier')->middleware('cashier')->group(function () {
+//     Route::get('/home', fn() => view('cashier.index'))->name('cashier.home');
+//     // More cashier routes here
+// });
