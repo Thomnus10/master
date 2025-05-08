@@ -8,7 +8,7 @@
 <div class="mb-4">
     <strong>Order ID:</strong> {{ $order->id }}<br>
     <strong>Date:</strong> {{ $order->order_date->format('F d, Y h:i A') }}<br>
-    <strong>Cashier:</strong> {{ $order->employee->name ?? 'Unknown' }}<br>
+    <strong>Cashier:</strong> {{ $order->employee->Fname}} {{  $order->employee->Mname}} {{  $order->employee->Lname ?? 'Unknown' }}<br>
     <strong>Payment Method:</strong> {{ ucfirst($order->payment_method) }}<br>
 </div>
 
@@ -32,15 +32,25 @@
         @endforeach
     </tbody>
 </table>
+@php
+    $subtotal = 0;
+    $tax = $subtotal * 0.12;
+    // $discountRate = $discount ?? 0;
+    // $discountAmount = $subtotal * ($discount /100) ?? 0;
+    $total = $subtotal + $tax;
+    $amountTendered = $order->amount_tendered ?? $total;
+    $changeAmount = $order->change_amount ?? 0;
+@endphp
 
 <div class="mt-4">
-    <p><strong>Subtotal:</strong> ₱{{ number_format($order->subtotal, 2) }}</p>
-    <p><strong>Tax (12%):</strong> ₱{{ number_format($order->tax, 2) }}</p>
-    <p><strong>Discount ({{ $order->discount ?? 0 }}%):</strong> -₱{{ number_format($order->discount_amount, 2) }}</p>
-    <p class="fs-4"><strong>Total Amount:</strong> ₱{{ number_format($order->total_amount, 2) }}</p>
-    <p><strong>Amount Tendered:</strong> ₱{{ number_format($order->amount_tendered, 2) }}</p>
-    <p><strong>Change:</strong> ₱{{ number_format($order->change_amount, 2) }}</p>
+    <p><strong>Subtotal:</strong> ₱{{ number_format($subtotal, 2) }}</p>
+    <p><strong>Tax (12%):</strong> ₱{{ number_format($tax, 2) }}</p>
+    {{-- <p><strong>Discount ({{ $discountRate }}%):</strong> -₱{{ number_format($discountAmount, 2) }}</p> --}}
+    <p class="fs-4"><strong>Total Amount:</strong> ₱{{ number_format($total, 2) }}</p>
+    <p><strong>Amount Tendered:</strong> ₱{{ number_format($amountTendered, 2) }}</p>
+    <p><strong>Change:</strong> ₱{{ number_format($changeAmount, 2) }}</p>
 </div>
+
 
 <a href="{{ route('cashier.index') }}" class="btn btn-primary mt-3">Back to POS</a>
 @endsection

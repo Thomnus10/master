@@ -13,8 +13,8 @@
     <!-- Action Buttons Section -->
     <div class="mb-3">
         <a href="{{ route('inventories.create') }}" class="btn btn-primary mb-3">Add Stock</a>
-        <a href="{{ route('products.create') }}" class="btn btn-primary mb-3 ml-2">Add Product</a>
-        <a href="{{ route('categories.create') }}" class="btn btn-primary mb-3 ml-2">Add Category</a> 
+        <a href="{{ route('products.index') }}" class="btn btn-primary mb-3 ml-2">Products</a>
+        <a href="{{ route('categories.index') }}" class="btn btn-primary mb-3 ml-2">Categories</a> 
     </div>
 
     <!-- Inventory Table -->

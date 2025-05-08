@@ -1,4 +1,4 @@
-```php
+{{-- ```php
 @extends('layouts.pos')
 
 @section('title', 'Edit Order #' . $order->id)
@@ -290,4 +290,4 @@
     });
 </script>
 @endsection
-```
+``` --}}

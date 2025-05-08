@@ -33,4 +33,13 @@ class Order extends Model
             ->withPivot('quantity', 'price')
             ->withTimestamps();
     }
+    public function payment()
+    {
+        return $this->hasOne(Payment::class, 'order_id');
+    }
+    public function discounts()
+    {
+        return $this->belongsToMany(Discount::class, 'order_discount')
+                    ->withTimestamps();
+    }
 }

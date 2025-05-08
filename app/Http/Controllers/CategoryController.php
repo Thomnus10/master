@@ -11,7 +11,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-        return view('admin.inventory', compact('categories'));
+        return view('admin.category', compact('categories'));
     }
 
     // Show the form to create a new category

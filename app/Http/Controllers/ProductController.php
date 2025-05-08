@@ -13,7 +13,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        return view('admin.inventory', compact('products'));
+        return view('admin.product', compact('products'));
     }
 
     // Show form to create a new product

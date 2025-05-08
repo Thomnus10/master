@@ -1,4 +1,4 @@
-@extends('layouts.pos')
+{{-- @extends('layouts.pos')
 
 @section('title', 'New Transaction')
 
@@ -76,4 +76,4 @@
         </div>
     </form>
 </div>
-@endsection
+@endsection --}}

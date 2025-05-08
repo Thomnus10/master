@@ -421,6 +421,12 @@
                     <i class="bi bi-person-badge"></i> <span>Employee</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{ route('admin.supplier') }}"
+                    class="nav-link {{ request()->routeIs('admin.supplier') ? 'active' : '' }}">
+                    <i class="bi bi-person-badge"></i> <span>Supplier</span>
+                </a>
+            </li>
             <!-- Add the Logout Form -->
             {{-- <li class="nav-item mt-auto">
                 <form action="{{ route('logout') }}" method="POST">

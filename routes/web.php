@@ -10,7 +10,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController;
-
+use App\Http\Controllers\SupplierController;
 
 
 
@@ -31,6 +31,7 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('/transaction', fn() => view('admin.transaction'))->name('admin.transaction');
     Route::get('/user', fn() => view('admin.user'))->name('admin.user');
     Route::get('/employee', fn() => view('admin.employee'))->name('admin.employee');
+    Route::get('/supplier', fn() => view('admin.supplier'))->name('admin.supplier');
 
     // Users
     Route::get('/users', [UserController::class, 'index'])->name('admin.user');
@@ -70,6 +71,15 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
     Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+
+    // Suppliers
+    Route::get('suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
+    Route::get('suppliers/create', [SupplierController::class, 'create'])->name('suppliers.create');
+    Route::post('suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
+    Route::get('suppliers/{supplier}', [SupplierController::class, 'show'])->name('suppliers.show');
+    Route::get('suppliers/{supplier}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit');
+    Route::put('suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
+    Route::delete('suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
 });
 
 // // Cashier Routes

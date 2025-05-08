@@ -66,5 +66,11 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now(),
             ]
         ]);
+        $this->call([
+            CategorySeeder::class,
+            UnitSeeder::class,
+            ProductSeeder::class,
+            InventorySeeder::class,
+        ]);
     }
 }

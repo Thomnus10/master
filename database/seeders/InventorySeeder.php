@@ -4,18 +4,20 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Inventory;
+use App\Models\Product;
 use Carbon\Carbon;
 
 class InventorySeeder extends Seeder
 {
     public function run()
     {
-        // Assuming product IDs from 12 to 25
-        foreach (range(12, 25) as $productId) {
+        $products = Product::all();
+
+        foreach ($products as $product) {
             Inventory::create([
-                'product_id' => $productId,
-                'quantity' => rand(20, 30),
-                'expiration_date' => Carbon::now()->addDays(rand(30, 180)), // expires in 1 to 6 months
+                'product_id' => $product->id,
+                'quantity' => rand(10, 100),
+                'expiration_date' => Carbon::now()->addMonths(rand(1, 12)),
             ]);
         }
     }

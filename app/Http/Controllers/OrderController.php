@@ -62,8 +62,9 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
+        $employee = Employee::all();
         $order->load('products', 'employee');
-        return view('cashier.show', compact('order'));
+        return view('cashier.show', compact('employee','order'));
     }
 
     public function edit(Order $order)

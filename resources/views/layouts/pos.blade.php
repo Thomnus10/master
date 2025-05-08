@@ -129,6 +129,19 @@
             border-radius: 0;
             margin-bottom: 0;
         }
+        .receipt-box {
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background: #fff;
+    }
+    .receipt-box table {
+        width: 100%;
+        font-size: 14px;
+    }
+    .receipt-box th, .receipt-box td {
+        padding: 5px;
+    }
     </style>
     @yield('styles')
 </head>

@@ -44,4 +44,11 @@ class Product extends Model
     {
         return $this->inventories()->sum('quantity');
     }
+    public function suppliers()
+    {
+        return $this->belongsToMany(Supplier::class, 'product_supplier')
+            ->using(ProductSupplier::class)
+            ->withPivot(['quantity', 'price'])
+            ->withTimestamps();
+    }
 }

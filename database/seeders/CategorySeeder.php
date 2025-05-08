@@ -10,6 +10,9 @@ class CategorySeeder extends Seeder
     public function run()
     {
         $categories = [
+            'Biscuits',
+            'Dairy and Eggs',
+            'Meat and Seafood',
             'Bread and Bakery',
             'Canned and Jarred Goods',
             'Snacks and Chips',
@@ -20,7 +23,7 @@ class CategorySeeder extends Seeder
         ];
 
         foreach ($categories as $category) {
-            Category::create(['name' => $category]);
+            Category::firstOrCreate(['name' => $category]);
         }
     }
 }

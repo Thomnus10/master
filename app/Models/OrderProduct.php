@@ -25,10 +25,10 @@ class OrderProduct extends Pivot
         return $this->belongsTo(Product::class);
     }
 
-    public static function addProductToOrder($orderId, $product, $quantity)
+    public static function addProductToOrder($order, $product, $quantity)
     {
         return self::create([
-            'order_id' => $orderId,
+            'order_id' => $order->id,
             'product_id' => $product->id,
             'quantity' => $quantity,
             'price' => $product->price,

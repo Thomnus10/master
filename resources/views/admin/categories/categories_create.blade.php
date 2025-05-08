@@ -14,7 +14,7 @@
         </div>
         <button type="submit" class="btn btn-primary mt-3">Save Category</button>
         <!-- Cancel Button -->
-        <a href="{{ route('admin.inventory') }}" class="btn btn-secondary mt-3 ml-2">Back</a>
+        <a href="{{ route('categories.index') }}" class="btn btn-secondary mt-3 ml-2">Back</a>
     </form>
 </div>
 @endsection
