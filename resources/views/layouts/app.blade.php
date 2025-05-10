@@ -422,11 +422,23 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ route('admin.supplier') }}"
+                <a href="{{ route('suppliers.index') }}"
                     class="nav-link {{ request()->routeIs('admin.supplier') ? 'active' : '' }}">
                     <i class="bi bi-person-badge"></i> <span>Supplier</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{ route('requests.index') }}"
+                    class="nav-link {{ request()->routeIs('admin.request') ? 'active' : '' }}">
+                    <i class="bi bi-person-badge"></i> <span>Request Product</span>
+                </a>
+            </li>
+            {{-- <li class="nav-item">
+                <a href="{{ route('discounts.index') }}"
+                    class="nav-link {{ request()->routeIs('admin.discount') ? 'active' : '' }}">
+                    <i class="bi bi-person-badge"></i> <span>Discounts</span>
+                </a>
+            </li> --}}
             <!-- Add the Logout Form -->
             {{-- <li class="nav-item mt-auto">
                 <form action="{{ route('logout') }}" method="POST">

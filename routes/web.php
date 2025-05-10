@@ -11,6 +11,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\ProductRequestController;
 
 
 
@@ -80,6 +81,17 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('suppliers/{supplier}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit');
     Route::put('suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
     Route::delete('suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
+
+    Route::get('/products/request', [ProductController::class, 'showRequestForm'])->name('products.request.form');
+    Route::post('/products/request', [ProductController::class, 'requestProduct'])->name('products.request');
+    Route::post('/products/receive/{id}', [InventoryController::class, 'receiveProduct'])->name('products.receive');
+
+    Route::get('/requests', [ProductRequestController::class, 'index'])->name('requests.index');
+    Route::get('/requests/create', [ProductRequestController::class, 'create'])->name('requests.create');
+    Route::post('/requests', [ProductRequestController::class, 'store'])->name('requests.store');
+    Route::post('/requests/{id}/receive', [ProductRequestController::class, 'receive'])->name('requests.receive');
+
+
 });
 
 // // Cashier Routes

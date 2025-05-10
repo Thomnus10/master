@@ -16,7 +16,7 @@ class InventorySeeder extends Seeder
         foreach ($products as $product) {
             Inventory::create([
                 'product_id' => $product->id,
-                'quantity' => rand(10, 100),
+                'quantity' => rand(20, 40),
                 'expiration_date' => Carbon::now()->addMonths(rand(1, 12)),
             ]);
         }

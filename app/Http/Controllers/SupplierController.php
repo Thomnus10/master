@@ -12,6 +12,7 @@ class SupplierController extends Controller
     {
         $suppliers = Supplier::all(); // Retrieve all suppliers
         return view('admin.supplier', compact('suppliers')); // Pass to view
+        
     }
 
     // Show the form for creating a new supplier
@@ -42,7 +43,7 @@ class SupplierController extends Controller
     public function show($id)
     {
         $supplier = Supplier::findOrFail($id);
-        return view('admin.supplier', compact('supplier'));
+        return view('admin.suppliers.suppliers_show', compact('supplier'));
     }
 
     // Show the form for editing the specified supplier
@@ -68,7 +69,7 @@ class SupplierController extends Controller
             'phone' => $request->phone,
         ]);
 
-        return redirect()->route('suppliers.index')->with('success', 'Supplier updated successfully.');
+        return redirect()->route('admin.inventory')->with('success', 'Supplier updated successfully.');
     }
 
     // Remove the specified supplier from the database
@@ -77,6 +78,6 @@ class SupplierController extends Controller
         $supplier = Supplier::findOrFail($id);
         $supplier->delete();
 
-        return redirect()->route('suppliers.index')->with('success', 'Supplier deleted successfully.');
+        return redirect()->route('admin.inventory')->with('success', 'Supplier deleted successfully.');
     }
 }

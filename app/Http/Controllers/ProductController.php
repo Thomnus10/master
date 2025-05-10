@@ -6,6 +6,8 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Unit;
 use Illuminate\Http\Request;
+use App\Models\ProductRequest;
+use App\Models\Supplier;
 
 class ProductController extends Controller
 {
@@ -76,4 +78,27 @@ class ProductController extends Controller
 
         return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
     }
+
+    public function showRequestForm()
+{
+    return view('admin.products.request', [
+        'products' => Product::all(),
+        'suppliers' => Supplier::all(),
+    ]);
+}
+
+public function requestProduct(Request $request)
+{
+    $data = $request->validate([
+        'product_id' => 'required|exists:products,id',
+        'supplier_id' => 'required|exists:suppliers,id',
+        'quantity' => 'required|numeric|min:1',
+        'price' => 'required|numeric|min:0',
+    ]);
+
+    ProductRequest::create($data);
+
+    return redirect()->back()->with('success', 'Product request submitted.');
+}
+
 }

@@ -26,6 +26,7 @@
                 <th>Expiration Date</th>
                 <th>Category</th> <!-- Added Category Column -->
                 <th>Description</th>
+                <th>Suppliers</th>
                 <th>Price</th>
                 <th>Actions</th>
             </tr>
@@ -35,10 +36,22 @@
                 <tr>
                     <!-- Accessing product details through the inventory -->
                     <td>{{ $inventory->product->name ?? 'N/A' }}</td>
-                    <td>{{ $inventory->quantity }} {{$inventory->product->unit->type}}</td>
+                    <td>{{ $inventory->product->suppliers->sum('pivot.quantity') }} {{$inventory->product->unit->type}}</td>
                     <td>{{ \Carbon\Carbon::parse($inventory->expiration_date)->format('F d, Y') }}</td>
                     <td>{{ $inventory->product->category->name ?? 'N/A' }}</td> <!-- Displaying Category Name -->
                     <td>{{ $inventory->product->description ?? 'N/A' }}</td>
+                    <td>
+                        @forelse ($inventory->product->suppliers as $supplier)
+                            <div>
+                                <strong>{{ $supplier->name }}</strong><br>
+                                <small>Price: ₱{{ number_format($supplier->pivot->price, 2) }}</small><br>
+                                <small>Quantity: {{ $supplier->pivot->quantity }}</small>
+                            </div>
+                        @empty
+                            <span class="text-muted">No suppliers</span>
+                        @endforelse
+                    </td>
+                    
                     <td>₱ {{ $inventory->product->price ?? 'N/A' }}</td>
 
                     <td>
