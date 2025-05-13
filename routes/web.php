@@ -12,7 +12,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ProductRequestController;
-
+use App\Http\Controllers\DiscountController;
 
 
 Route::get('/', function () {
@@ -91,13 +91,32 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::post('/requests', [ProductRequestController::class, 'store'])->name('requests.store');
     Route::post('/requests/{id}/receive', [ProductRequestController::class, 'receive'])->name('requests.receive');
 
+    // Discount Management
+    Route::get('/discounts', [DiscountController::class, 'index'])
+        ->name('discounts.index');
+    Route::get('/discounts/create', [DiscountController::class, 'create'])
+        ->name('discounts.create');
+    Route::post('/discounts', [DiscountController::class, 'store'])
+        ->name('discounts.store');
+    Route::get('/discounts/{discount}/edit', [DiscountController::class, 'edit'])
+        ->name('discounts.edit');
+    Route::put('/discounts/{discount}', [DiscountController::class, 'update'])
+        ->name('discounts.update');
+    Route::delete('/discounts/{discount}', [DiscountController::class, 'destroy'])
+        ->name('discounts.destroy');
+    
+    // Discount Toggle Status
+    Route::patch('/discounts/{discount}/toggle-status', [DiscountController::class, 'toggleStatus'])
+        ->name('discounts.toggle-status');
+
 
 });
 
 // // Cashier Routes
 Route::prefix('cashier')->middleware('cashier')->group(function () {
     // Order management routes
-    Route::get('/index', [OrderController::class, 'index'])->name('cashier.index');
+    // Route::get('/index', [OrderController::class, 'index'])->name('cashier.index');
+    Route::get('/orders', [OrderController::class, 'index'])->name('cashier.orders.index');
     Route::get('/orders/create', [OrderController::class, 'create'])->name('cashier.create');
     Route::post('/orders', [OrderController::class, 'store'])->name('cashier.store');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('cashier.show');
@@ -106,6 +125,7 @@ Route::prefix('cashier')->middleware('cashier')->group(function () {
     Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('cashier.destroy');
 
     // Cart (POS) routes handled by CartController
+    Route::get('/pos', [CartController::class, 'showCart'])->name('cashier.pos.index');
     Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.addToCart');
     Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.removeFromCart');
     Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
@@ -114,6 +134,21 @@ Route::prefix('cashier')->middleware('cashier')->group(function () {
     Route::post('/cart/discount', [CartController::class, 'applyDiscount'])->name('cart.applyDiscount');
     Route::post('/cart/scan', [CartController::class, 'scanProductId'])->name('cart.scanProductId');
     Route::post('/orders/{order}/payment', [CartController::class, 'processPayment'])->name('cart.processPayment');
+
+    Route::get('orders/{order}/payment', [OrderController::class, 'showPaymentForm'])->name('orders.payment');
+    Route::post('orders/{order}/payment', [OrderController::class, 'processPayment'])->name('orders.process-payment');
+    Route::get('orders/{order}/payment_details', [OrderController::class, 'showPayment'])->name('orders.payment_details');
+    Route::post('orders/{order}/payment/show', [OrderController::class, 'processPayment'])->name('orders.show');
+
+    // Discount Application
+    Route::post('/apply-discount', [CartController::class, 'applyDiscount'])
+        ->name('discounts.apply');
+    Route::post('/remove-discount', [CartController::class, 'removeDiscount'])
+        ->name('discounts.remove');
+    
+    // Get Active Discounts (AJAX)
+    Route::get('/active-discounts', [CartController::class, 'getActiveDiscounts'])
+        ->name('discounts.active');
 });
 
 // Route::prefix('cashier')->middleware('cashier')->group(function () {

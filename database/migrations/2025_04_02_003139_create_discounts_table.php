@@ -14,10 +14,9 @@ return new class extends Migration
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->enum('type',['percentage','fixed']);
-            $table->decimal('value',8,2);
-            $table->date('valid_from')->nullable();
-            $table->date('valid_to')->nullable();
+            $table->enum('type', ['fixed', 'percentage']); // Add type
+            $table->decimal('value', 10, 2);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

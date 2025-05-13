@@ -433,6 +433,12 @@
                     <i class="bi bi-person-badge"></i> <span>Request Product</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{ route('discounts.index') }}"
+                    class="nav-link {{ request()->routeIs('admin.discount') ? 'active' : '' }}">
+                    <i class="bi bi-person-badge"></i> <span>Discount Config</span>
+                </a>
+            </li>
             {{-- <li class="nav-item">
                 <a href="{{ route('discounts.index') }}"
                     class="nav-link {{ request()->routeIs('admin.discount') ? 'active' : '' }}">

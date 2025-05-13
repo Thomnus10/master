@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'POS System')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Add this line to the head section of layouts.pos -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <style>
         :root {
             --primary-accent: #13213C;
@@ -149,7 +151,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ route('cashier.index') }}">DOWENCE MARKET</a>
+            <a class="navbar-brand" href="{{ route('cashier.pos.index') }}">DOWENCE MARKET</a>
             <div class="ms-auto d-flex align-items-center">
                 <span class="navbar-text me-2">Cashier: {{ Auth::user()->name ?? 'Jane Doe' }}</span>
                 <div class="cashier-avatar">{{ Auth::user() ? substr(Auth::user()->name, 0, 2) : 'JD' }}</div>

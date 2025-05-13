@@ -10,6 +10,7 @@ class Discount extends Model
         'name',
         'type',
         'value',
+        'is_active',
     ];
 
     public function orders()
