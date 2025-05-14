@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ProductController;
@@ -164,7 +163,3 @@ Route::prefix('cashier')->middleware('cashier')->group(function () {
     Route::get('/orders/{order}/receipt-pdf', [OrderController::class, 'downloadReceiptPdf'])->name('orders.receipt_pdf');
 });
 
-// Route::prefix('cashier')->middleware('cashier')->group(function () {
-//     Route::get('/home', fn() => view('cashier.index'))->name('cashier.home');
-//     // More cashier routes here
-// });

@@ -1,4 +1,4 @@
-@extends('layouts.pos')
+{{-- @extends('layouts.pos')
 @section('title', 'Transactions')
 
 @section('content')
@@ -25,4 +25,4 @@
             @endforeach
         </tbody>
     </table>
-@endsection
+@endsection --}}

@@ -403,12 +403,12 @@
                     <i class="bi bi-box-seam"></i> <span>Inventory</span>
                 </a>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a href="{{ route('admin.transaction') }}"
                     class="nav-link {{ request()->routeIs('admin.transaction') ? 'active' : '' }}">
                     <i class="bi bi-receipt"></i> <span>Transaction</span>
                 </a>
-            </li>
+            </li> --}}
             <li class="nav-item">
                 <a href="{{ route('admin.user') }}"
                     class="nav-link {{ request()->routeIs('admin.user') ? 'active' : '' }}">

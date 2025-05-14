@@ -1,4 +1,4 @@
-@extends('layout.pos')
+{{-- @extends('layout.pos')
 @section('title', 'Receipt')
 
 @section('content')
@@ -27,4 +27,4 @@
         </table>
         <p class="text-end fw-bold">Total Paid: ₱{{ number_format($order->total, 2) }}</p>
     </div>
-@endsection
+@endsection --}}
