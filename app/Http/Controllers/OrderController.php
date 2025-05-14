@@ -35,7 +35,7 @@ class OrderController extends Controller
             'products.*.quantity' => 'required|integer|min:1',
             'products.*.price' => 'required|numeric|min:0',
             'discount' => 'nullable|numeric|min:0|max:100',
-            'payment_method' => 'nullable|string|in:cash,card,mobile',
+            'payment_method' => 'nullable|string|in:cash,card,digital',
         ]);
 
         // Calculate totals
@@ -153,7 +153,7 @@ class OrderController extends Controller
     public function processPayment(Request $request, Order $order)
     {
         $request->validate([
-            'payment_method' => 'required|in:cash,card,mobile',
+            'payment_method' => 'required|in:cash,card,digital',
             'amount' => 'required|numeric|min:' . $order->total_amount,
             'reference_number' => 'nullable|string|max:255',
             'amount_tendered' => 'required_if:payment_method,cash|numeric|min:' . $order->total_amount,

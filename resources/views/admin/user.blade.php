@@ -16,6 +16,7 @@
             <tr>
                 <th>ID</th>
                 <th>Username</th>
+                <th>Role</th>
                 <th>Email</th>
                 <th>Actions</th>
             </tr>
@@ -25,6 +26,7 @@
             <tr>
                 <td>{{ $user->id }}</td>
                 <td>{{ $user->username }}</td>
+                <td>{{ $user->role->role_name }} </td>
                 <td>{{ $user->email }}</td>
                 <td>
                     <a href="{{ route('users.users_edit', $user->id) }}" class="btn btn-warning btn-sm">Edit</a>

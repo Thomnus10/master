@@ -19,7 +19,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
         }
         body {
             background-color: var(--secondary-palette-2);
@@ -31,10 +31,16 @@
         .navbar {
             background-color: var(--primary-accent);
             color: var(--secondary-palette-1);
-            padding: 15px 20px;
+            padding: .75rem 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         .navbar-brand, .navbar-text {
             color: var(--secondary-palette-1) !important;
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
         .cashier-avatar {
             width: 35px;
@@ -72,7 +78,30 @@
             font-weight: bold;
         }
         .btn-primary:hover {
+            background-color: var(--complementary-accent);
             opacity: 0.9;
+        }
+        .btn-outline-light {
+            color: var(--secondary-palette-1);
+            border-color: var(--secondary-palette-1);
+            transition: all 0.2s ease;
+        }
+        .btn-outline-light:hover {
+            background-color: var(--complementary-accent);
+            border-color: var(--complementary-accent);
+            color: var(--primary-accent);
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            transition: all 0.2s ease;
+        }
+        .btn-danger:hover {
+            background-color: #bb2d3b;
+            border-color: #bb2d3b;
+        }
+        .rounded-pill {
+            border-radius: 50rem!important;
         }
         .table th {
             background-color: var(--primary-accent);
@@ -148,17 +177,27 @@
     @yield('styles')
 </head>
 <body>
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ route('cashier.pos.index') }}">DOWENCE MARKET</a>
+            <a class="navbar-brand d-flex align-items-center" href="{{ route('cashier.pos.index') }}">
+                <i class="bi bi-cart4 me-2"></i>
+                DOWENCE MARKET
+            </a>
             <div class="ms-auto d-flex align-items-center">
-                <span class="navbar-text me-2">Cashier: {{ Auth::user()->name ?? 'Jane Doe' }}</span>
-                <div class="cashier-avatar">{{ Auth::user() ? substr(Auth::user()->name, 0, 2) : 'JD' }}</div>
+                <!-- Home Button -->
+                <a href="{{ route('cashier.home') }}" class="btn btn-sm btn-outline-light me-3">
+                    <i class="bi bi-house-door me-1"></i>Home
+                </a>
+                
+                <div class="d-flex align-items-center bg-light bg-opacity-10 px-3 py-2 rounded-pill me-3">
+                    <i class="bi bi-person-badge me-2"></i>
+                    <span class="navbar-text">{{ $employee->Fname ?? 'Jane' }} {{ $employee->Lname ?? 'Doe' }}</span>
+                </div>
+                
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
-                    <button type="submit" class="dropdown-item">
-                        <i class="bi bi-box-arrow-right me-2"></i>Logout
+                    <button type="submit" class="btn btn-sm btn-danger rounded-pill px-3">
+                        <i class="bi bi-box-arrow-right me-1"></i>Logout
                     </button>
                 </form>
             </div>

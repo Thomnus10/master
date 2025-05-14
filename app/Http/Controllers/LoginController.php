@@ -35,7 +35,7 @@ class LoginController extends Controller
             if ($user->role_id == '1') {
                 return redirect()->route('admin.dashboard'); // Redirect to admin dashboard
             } elseif ($user->role_id == '2') {
-                return redirect()->route('cashier.pos.index'); // Redirect to cashier dashboard
+                return redirect()->route('cashier.home'); // Redirect to cashier dashboard
             }
         } else {
             return back()->withErrors(['login_error' => 'Invalid credentials!']);

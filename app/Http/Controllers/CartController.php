@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Payment;
+use App\Models\Employee;
 use App\Models\Discount;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,15 +14,58 @@ use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
-    public function showCart()
-{
-    $cart = session()->get('cart', []);
-    $products = Product::all(); // Add this line
-    $activeDiscounts = Discount::where('is_active', true)->get();
-    $currentDiscount = session()->get('current_discount');
 
-    return view('cashier.pos.index', compact('cart', 'products', 'activeDiscounts', 'currentDiscount'));
-}
+    public function dashboard()
+    {
+        $today = now()->format('Y-m-d');
+
+        // Get today's orders
+        $orders = Order::with(['products', 'payment', 'employee'])
+            ->whereDate('order_date', $today)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // Calculate totals
+        $totalSales = $orders->sum('total_amount');
+        $totalTransactions = $orders->count();
+        $totalItemsSold = $orders->sum(function ($order) {
+            return $order->products->sum('pivot.quantity');
+        });
+
+        // Get current cart for the POS link
+        $cart = session()->get('cart', []);
+        $products = Product::all();
+        $activeDiscounts = Discount::where('is_active', true)->get();
+        $currentDiscount = session()->get('current_discount');
+
+        return view('cashier.home', compact(
+            'orders',
+            'totalSales',
+            'totalTransactions',
+            'totalItemsSold',
+            'today',
+            'cart',
+            'products',
+            'activeDiscounts',
+            'currentDiscount'
+        ));
+    }
+
+    public function showEmployee()
+    {
+        $employee = Employee::all();
+        return view ('layouts.pos', compact ('employee'));
+
+    }
+    public function showCart()
+    {
+        $cart = session()->get('cart', []);
+        $products = Product::all(); // Add this line
+        $activeDiscounts = Discount::where('is_active', true)->get();
+        $currentDiscount = session()->get('current_discount');
+
+        return view('cashier.pos.index', compact('cart', 'products', 'activeDiscounts', 'currentDiscount'));
+    }
 
     public function addToCart(Request $request)
     {
@@ -116,139 +160,138 @@ class CartController extends Controller
     }
 
     public function checkout(Request $request)
-{
-    // Start transaction to ensure data consistency
-    DB::beginTransaction();
+    {
+        // Start transaction to ensure data consistency
+        DB::beginTransaction();
 
-    try {
-        $cart = session()->get('cart', []);
-        if (empty($cart)) {
-            return redirect()->back()->with('error', 'Cart is empty.');
-        }
-
-        $request->validate([
-            'total_amount' => 'required|numeric|min:0',
-            'payment_method' => 'required|string|in:cash,card,mobile',
-            'amount_tendered' => 'required|numeric|min:0',
-            'payment_reference_number' => 'nullable|string|max:255',
-        ]);
-
-        $user = Auth::user();
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'Please log in to checkout.');
-        }
-
-        // Calculate order totals
-        $subtotal = 0;
-        $orderItems = [];
-        
-        foreach ($cart as $item) {
-            $product = Product::find($item['id']);
-            if (!$product) {
-                throw new \Exception("Product {$item['id']} not found");
+        try {
+            $cart = session()->get('cart', []);
+            if (empty($cart)) {
+                return redirect()->back()->with('error', 'Cart is empty.');
             }
 
-            if ($product->totalInventoryQuantity() < $item['quantity']) {
-                throw new \Exception("Not enough inventory for {$product->name}");
-            }
-
-            $subtotal += $product->price * $item['quantity'];
-            $orderItems[] = [
-                'product' => $product,
-                'quantity' => $item['quantity']
-            ];
-        }
-
-        $tax = $subtotal * 0.12;
-        $discountData = session()->get('current_discount');
-        $discountAmount = 0;
-        $discountRate = 0;
-
-        if ($discountData) {
-            if ($discountData['type'] === 'percentage') {
-                $discountRate = $discountData['value'];
-                $discountAmount = $subtotal * ($discountRate / 100);
-            } elseif ($discountData['type'] === 'fixed') {
-                $discountAmount = $discountData['value'];
-            }
-        }
-
-        $total = $subtotal + $tax - $discountAmount;
-
-        if ($request->amount_tendered < $total) {
-            throw new \Exception("Amount tendered is less than total amount due.");
-        }
-
-        // Create the order
-        $order = Order::create([
-            'employee_id' => $user->id,
-            'total_amount' => $total,
-            'subtotal' => $subtotal,
-            'tax' => $tax,
-            'discount' => $discountRate,
-            'discount_amount' => $discountAmount,
-            'order_date' => now(),
-            'status' => 'completed',
-            'payment_method' => $request->payment_method,
-            'amount_tendered' => $request->amount_tendered,
-            'change_amount' => $request->amount_tendered - $total,
-            'notes' => $request->notes,
-        ]);
-
-        // Process inventory and order items
-        foreach ($orderItems as $item) {
-            $product = $item['product'];
-            $quantity = $item['quantity'];
-            $remaining = $quantity;
-
-            // Deduct from inventory (FIFO)
-            foreach ($product->inventories()->orderBy('expiration_date')->get() as $inventory) {
-                if ($remaining <= 0) break;
-
-                $deducted = min($inventory->quantity, $remaining);
-                $inventory->decrement('quantity', $deducted);
-                $remaining -= $deducted;
-            }
-
-            // Add to order products
-            $order->products()->attach($product->id, [
-                'quantity' => $quantity,
-                'price' => $product->price,
-                'created_at' => now(),
-                'updated_at' => now()
+            $request->validate([
+                'total_amount' => 'required|numeric|min:0',
+                'payment_method' => 'required|string|in:cash,card,digital',
+                'amount_tendered' => 'required|numeric|min:0',
+                'payment_reference_number' => 'nullable|string|max:255',
             ]);
+
+            $user = Auth::user();
+            if (!$user) {
+                return redirect()->route('login')->with('error', 'Please log in to checkout.');
+            }
+
+            // Calculate order totals
+            $subtotal = 0;
+            $orderItems = [];
+
+            foreach ($cart as $item) {
+                $product = Product::find($item['id']);
+                if (!$product) {
+                    throw new \Exception("Product {$item['id']} not found");
+                }
+
+                if ($product->totalInventoryQuantity() < $item['quantity']) {
+                    throw new \Exception("Not enough inventory for {$product->name}");
+                }
+
+                $subtotal += $product->price * $item['quantity'];
+                $orderItems[] = [
+                    'product' => $product,
+                    'quantity' => $item['quantity']
+                ];
+            }
+
+            $tax = $subtotal * 0.12;
+            $discountData = session()->get('current_discount');
+            $discountAmount = 0;
+            $discountRate = 0;
+
+            if ($discountData) {
+                if ($discountData['type'] === 'percentage') {
+                    $discountRate = $discountData['value'];
+                    $discountAmount = $subtotal * ($discountRate / 100);
+                } elseif ($discountData['type'] === 'fixed') {
+                    $discountAmount = $discountData['value'];
+                }
+            }
+
+            $total = $subtotal + $tax - $discountAmount;
+
+            if ($request->amount_tendered < $total) {
+                throw new \Exception("Amount tendered is less than total amount due.");
+            }
+
+            // Create the order
+            $order = Order::create([
+                'employee_id' => $user->id,
+                'total_amount' => $total,
+                'subtotal' => $subtotal,
+                'tax' => $tax,
+                'discount' => $discountRate,
+                'discount_amount' => $discountAmount,
+                'order_date' => now(),
+                'status' => 'completed',
+                'payment_method' => $request->payment_method,
+                'amount_tendered' => $request->amount_tendered,
+                'change_amount' => $request->amount_tendered - $total,
+                'notes' => $request->notes,
+            ]);
+
+            // Process inventory and order items
+            foreach ($orderItems as $item) {
+                $product = $item['product'];
+                $quantity = $item['quantity'];
+                $remaining = $quantity;
+
+                // Deduct from inventory (FIFO)
+                foreach ($product->inventories()->orderBy('expiration_date')->get() as $inventory) {
+                    if ($remaining <= 0) break;
+
+                    $deducted = min($inventory->quantity, $remaining);
+                    $inventory->decrement('quantity', $deducted);
+                    $remaining -= $deducted;
+                }
+
+                // Add to order products
+                $order->products()->attach($product->id, [
+                    'quantity' => $quantity,
+                    'price' => $product->price,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+            }
+
+            // Create payment record
+            $payment = Payment::create([
+                'order_id' => $order->id,
+                'employee_id' => $user->id,
+                'total_amount' => $total,
+                'payment_date' => now(),
+                'payment_method' => $request->payment_method,
+                'payment_reference_number' => $request->payment_reference_number,
+                'amount_tendered' => $request->amount_tendered,
+                'change_amount' => $request->amount_tendered - $total,
+            ]);
+
+            // Clear session data
+            session()->forget(['cart', 'current_discount']);
+
+            // Commit the transaction
+            DB::commit();
+
+            return redirect()
+                ->route('cashier.show', $order)
+                ->with('success', 'Order #' . $order->id . ' placed successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()
+                ->back()
+                ->with('error', 'Checkout failed: ' . $e->getMessage())
+                ->withInput();
         }
-
-        // Create payment record
-        $payment = Payment::create([
-            'order_id' => $order->id,
-            'employee_id' => $user->id,
-            'total_amount' => $total,
-            'payment_date' => now(),
-            'payment_method' => $request->payment_method,
-            'payment_reference_number' => $request->payment_reference_number,
-            'amount_tendered' => $request->amount_tendered,
-            'change_amount' => $request->amount_tendered - $total,
-        ]);
-
-        // Clear session data
-        session()->forget(['cart', 'current_discount']);
-
-        // Commit the transaction
-        DB::commit();
-
-        return redirect()
-            ->route('cashier.show', $order)
-            ->with('success', 'Order #' . $order->id . ' placed successfully!');
-
-    } catch (\Exception $e) {
-        DB::rollBack();
-        return redirect()
-            ->back()
-            ->with('error', 'Checkout failed: ' . $e->getMessage())
-            ->withInput();
     }
-}
 
     public function scanProductId(Request $request)
     {
@@ -313,5 +356,35 @@ class CartController extends Controller
             ->first();
 
         return response()->json($discount);
+    }
+    public function printDailyReport(Request $request)
+    {
+        $today = now()->format('Y-m-d');
+
+        $orders = Order::with(['products', 'payment'])
+            ->whereDate('order_date', $today)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $totalSales = $orders->sum('total_amount');
+        $totalTransactions = $orders->count();
+        $totalItemsSold = $orders->sum(function ($order) {
+            return $order->products->sum('pivot.quantity');
+        });
+
+        $title = $request->input('title', 'Daily Sales Report - ' . $today);
+        $includeSummary = $request->boolean('includeSummary', true);
+        $includeTransactions = $request->boolean('includeTransactions', true);
+
+        return view('cashier.print.daily', compact(
+            'orders',
+            'totalSales',
+            'totalTransactions',
+            'totalItemsSold',
+            'today',
+            'title',
+            'includeSummary',
+            'includeTransactions'
+        ));
     }
 }

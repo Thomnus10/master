@@ -9,14 +9,14 @@ class Payment extends Model
 {
     use HasFactory;
 
-    protected $table = 'payments'; // Default pluralized table name
+    protected $table = 'payments';
 
-    protected $primaryKey = 'id'; // You can change this if using a different primary key
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'order_id',
         'employee_id',
-        'total_amount',
+        'total_amount', // This is the correct column name
         'payment_date',
         'payment_method',
         'payment_reference_number',
@@ -24,11 +24,11 @@ class Payment extends Model
 
     protected $casts = [
         'payment_date' => 'datetime',
-        'amount' => 'decimal:2',
+        'total_amount' => 'decimal:2', // Changed from 'amount' to 'total_amount'
         'payment_method' => 'string',
     ];
 
-    public $timestamps = false; // Since you're using a `payment_date` field instead of created_at/updated_at
+    public $timestamps = false;
 
     // Relationships
     public function order()

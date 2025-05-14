@@ -277,10 +277,10 @@
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="payment_method" id="mobile" value="mobile">
-                                        <label class="form-check-label d-flex align-items-center" for="mobile">
+                                        <input class="form-check-input" type="radio" name="payment_method" id="digital" value="digital">
+                                        <label class="form-check-label d-flex align-items-center" for="digital">
                                             <span class="payment-icon me-2">📱</span>
-                                            <span>GCash/Mobile Payment</span>
+                                            <span>GCash/Digital Payment</span>
                                         </label>
                                     </div>
                                 </div>

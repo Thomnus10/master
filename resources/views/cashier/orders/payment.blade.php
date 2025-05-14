@@ -43,7 +43,7 @@
                             <select class="form-select" id="payment_method" name="payment_method" required>
                                 <option value="cash" {{ old('payment_method', $order->payment_method) == 'cash' ? 'selected' : '' }}>Cash</option>
                                 <option value="card" {{ old('payment_method', $order->payment_method) == 'card' ? 'selected' : '' }}>Credit/Debit Card</option>
-                                <option value="mobile" {{ old('payment_method', $order->payment_method) == 'mobile' ? 'selected' : '' }}>Mobile Payment</option>
+                                <option value="digital" {{ old('payment_method', $order->payment_method) == 'digital' ? 'selected' : '' }}>Mobile Payment</option>
                             </select>
                         </div>
 

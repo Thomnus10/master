@@ -424,36 +424,27 @@
             <li class="nav-item">
                 <a href="{{ route('suppliers.index') }}"
                     class="nav-link {{ request()->routeIs('admin.supplier') ? 'active' : '' }}">
-                    <i class="bi bi-person-badge"></i> <span>Supplier</span>
+                    <i class="bi bi-truck"></i> <span>Supplier</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('sales.report') }}"
+                    class="nav-link {{ request()->routeIs('sales.report') ? 'active' : '' }}">
+                    <i class="bi bi-bar-chart-line"></i> <span>Sales Report</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="{{ route('requests.index') }}"
                     class="nav-link {{ request()->routeIs('admin.request') ? 'active' : '' }}">
-                    <i class="bi bi-person-badge"></i> <span>Request Product</span>
+                    <i class="bi bi-box-arrow-in-down"></i> <span>Request Product</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="{{ route('discounts.index') }}"
                     class="nav-link {{ request()->routeIs('admin.discount') ? 'active' : '' }}">
-                    <i class="bi bi-person-badge"></i> <span>Discount Config</span>
+                    <i class="bi bi-tags"></i> <span>Discount Config</span>
                 </a>
             </li>
-            {{-- <li class="nav-item">
-                <a href="{{ route('discounts.index') }}"
-                    class="nav-link {{ request()->routeIs('admin.discount') ? 'active' : '' }}">
-                    <i class="bi bi-person-badge"></i> <span>Discounts</span>
-                </a>
-            </li> --}}
-            <!-- Add the Logout Form -->
-            {{-- <li class="nav-item mt-auto">
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="logout-btn">
-                        <i class="bi bi-box-arrow-right"></i> <span>Logout</span>
-                    </button>
-                </form>
-            </li> --}}
         </ul>
     </div>
 
@@ -572,6 +563,7 @@
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+@stack('scripts')
 </body>
 
 </html>

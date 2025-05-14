@@ -13,6 +13,9 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ProductRequestController;
 use App\Http\Controllers\DiscountController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SalesReportController;
+
 
 
 Route::get('/', function () {
@@ -27,7 +30,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Admin Routes
 Route::prefix('admin')->middleware('admin')->group(function () {
-    Route::get('/dashboard', fn() => view('admin.dashboard'))->name('admin.dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/inventory', fn() => view('admin.inventory'))->name('admin.inventories');
     Route::get('/transaction', fn() => view('admin.transaction'))->name('admin.transaction');
     Route::get('/user', fn() => view('admin.user'))->name('admin.user');
@@ -57,6 +60,9 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('/inventories/{inventories}/edit', [InventoryController::class, 'edit'])->name('inventories.edit');
     Route::put('/inventories/{inventories}', [InventoryController::class, 'update'])->name('inventories.update');
 
+    Route::get('/sales-report', [SalesReportController::class, 'index'])->name('sales.report');
+
+    
     // Products
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
@@ -86,6 +92,7 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::post('/products/request', [ProductController::class, 'requestProduct'])->name('products.request');
     Route::post('/products/receive/{id}', [InventoryController::class, 'receiveProduct'])->name('products.receive');
 
+    //Product Supply Request
     Route::get('/requests', [ProductRequestController::class, 'index'])->name('requests.index');
     Route::get('/requests/create', [ProductRequestController::class, 'create'])->name('requests.create');
     Route::post('/requests', [ProductRequestController::class, 'store'])->name('requests.store');
@@ -114,6 +121,7 @@ Route::prefix('admin')->middleware('admin')->group(function () {
 Route::prefix('cashier')->middleware('cashier')->group(function () {
     // Order management routes
     // Route::get('/index', [OrderController::class, 'index'])->name('cashier.index');
+    Route::get('/home', [CartController::class, 'dashboard'])->name('cashier.home');
     Route::get('/orders', [OrderController::class, 'index'])->name('cashier.orders.index');
     Route::get('/orders/create', [OrderController::class, 'create'])->name('cashier.create');
     Route::post('/orders', [OrderController::class, 'store'])->name('cashier.store');
@@ -132,7 +140,7 @@ Route::prefix('cashier')->middleware('cashier')->group(function () {
     Route::post('/cart/discount', [CartController::class, 'applyDiscount'])->name('cart.applyDiscount');
     Route::post('/cart/scan', [CartController::class, 'scanProductId'])->name('cart.scanProductId');
     Route::post('/orders/{order}/payment', [CartController::class, 'processPayment'])->name('cart.processPayment');
-
+    Route::get('/print/daily', [CartController::class, 'printDailyReport'])->name('cashier.print.daily');
     Route::get('orders/{order}/payment', [OrderController::class, 'showPaymentForm'])->name('orders.payment');
     Route::post('orders/{order}/payment', [OrderController::class, 'processPayment'])->name('orders.process-payment');
     Route::get('orders/{order}/payment_details', [OrderController::class, 'showPayment'])->name('orders.payment_details');
@@ -150,6 +158,8 @@ Route::prefix('cashier')->middleware('cashier')->group(function () {
     Route::get('/active-discounts', [CartController::class, 'getActiveDiscounts'])
         ->name('discounts.active');
 
+
+    //Receipt Printing
     Route::get('/orders/{order}/receipt', [OrderController::class, 'printReceipt'])->name('orders.print_receipt');
     Route::get('/orders/{order}/receipt-pdf', [OrderController::class, 'downloadReceiptPdf'])->name('orders.receipt_pdf');
 });
