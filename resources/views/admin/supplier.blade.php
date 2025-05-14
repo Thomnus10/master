@@ -9,7 +9,7 @@
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Phone</th> 
+                    <th>Contact</th> 
                     <th>Actions</th>
                 </tr>
             </thead>

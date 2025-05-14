@@ -28,7 +28,8 @@ class DiscountController extends Controller
         'is_active' => 'nullable|boolean',
     ]);
 
-    $validated['is_active'] = $request->has('is_active');
+    $validated['is_active'] = $request->input('is_active', 0);
+ 
 
     Discount::create($validated);
 
@@ -50,7 +51,8 @@ class DiscountController extends Controller
             'value' => 'required|numeric|min:0',
             'is_active' => 'boolean',
         ]);
-        $validated['is_active'] = $request->has('is_active');
+        $validated['is_active'] = $request->input('is_active', 0);
+
 
         $discount->update($validated);
 

@@ -8,15 +8,16 @@ use App\Models\Product;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class OrderController extends Controller
 {
     public function index()
-{
-    $products = Product::all();
-    $orders = Order::with(['employee', 'payment'])->latest()->get();
-    return view('cashier.orders.index', compact('orders', 'products'));
-}
+    {
+        $products = Product::all();
+        $orders = Order::with(['employee', 'payment'])->latest()->get();
+        return view('cashier.orders.show', compact('orders', 'products'));
+    }
 
     public function create()
     {
@@ -41,7 +42,7 @@ class OrderController extends Controller
         $subtotal = collect($request->products)->sum(function ($item) {
             return $item['quantity'] * $item['price'];
         });
-        
+
         $tax = $subtotal * 0.12; // Assuming 12% tax
         $discountRate = $request->discount ?? 0;
         $discountAmount = $subtotal * ($discountRate / 100);
@@ -83,7 +84,7 @@ class OrderController extends Controller
     public function show(Order $order)
     {
         $order->load(['products', 'employee', 'payment']);
-        return view('cashier.show', compact('order'));
+        return view('cashier.orders.show', compact('order'));
     }
 
     public function edit(Order $order)
@@ -109,7 +110,7 @@ class OrderController extends Controller
         $subtotal = collect($request->products)->sum(function ($item) {
             return $item['quantity'] * $item['price'];
         });
-        
+
         $tax = $subtotal * 0.12;
         $discountRate = $request->discount ?? 0;
         $discountAmount = $subtotal * ($discountRate / 100);
@@ -190,5 +191,18 @@ class OrderController extends Controller
     {
         $payment = $order->payment;
         return view('cashier.payment_details', compact('order', 'payment'));
+    }
+    public function printReceipt(Order $order)
+    {
+        return view('cashier.orders.receipt', compact('order'));
+    }
+
+
+    public function downloadReceiptPdf(Order $order)
+    {
+        $order->load('products'); // Load pivot data
+
+        $pdf = Pdf::loadView('cashier.orders.receipt_pdf', compact('order'));
+        return $pdf->download('receipt_order_' . $order->id . '.pdf');
     }
 }

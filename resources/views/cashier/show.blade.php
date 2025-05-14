@@ -1,4 +1,4 @@
-@extends('layouts.pos')
+{{-- @extends('layouts.pos')
 
 @section('title', 'Order Details')
 
@@ -151,4 +151,4 @@
             </a>
         </div>
     </div>
-@endsection
+@endsection --}}

@@ -104,12 +104,10 @@ Route::prefix('admin')->middleware('admin')->group(function () {
         ->name('discounts.update');
     Route::delete('/discounts/{discount}', [DiscountController::class, 'destroy'])
         ->name('discounts.destroy');
-    
+
     // Discount Toggle Status
     Route::patch('/discounts/{discount}/toggle-status', [DiscountController::class, 'toggleStatus'])
         ->name('discounts.toggle-status');
-
-
 });
 
 // // Cashier Routes
@@ -140,15 +138,20 @@ Route::prefix('cashier')->middleware('cashier')->group(function () {
     Route::get('orders/{order}/payment_details', [OrderController::class, 'showPayment'])->name('orders.payment_details');
     Route::post('orders/{order}/payment/show', [OrderController::class, 'processPayment'])->name('orders.show');
 
+    Route::get('/orders/{order}/receipt', [OrderController::class, 'printReceipt'])->name('orders.print_receipt');
+
     // Discount Application
     Route::post('/apply-discount', [CartController::class, 'applyDiscount'])
         ->name('discounts.apply');
     Route::post('/remove-discount', [CartController::class, 'removeDiscount'])
         ->name('discounts.remove');
-    
+
     // Get Active Discounts (AJAX)
     Route::get('/active-discounts', [CartController::class, 'getActiveDiscounts'])
         ->name('discounts.active');
+
+    Route::get('/orders/{order}/receipt', [OrderController::class, 'printReceipt'])->name('orders.print_receipt');
+    Route::get('/orders/{order}/receipt-pdf', [OrderController::class, 'downloadReceiptPdf'])->name('orders.receipt_pdf');
 });
 
 // Route::prefix('cashier')->middleware('cashier')->group(function () {

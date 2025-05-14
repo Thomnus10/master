@@ -4,7 +4,7 @@
 
 @section('content')
 <h2>Employee List</h2>
-
+<a href="{{ route('employees.create') }}" class="btn btn-primary">Add New Employee</a>
 @if(session('success'))
     <div class="alert alert-success">{{ session('success') }}</div>
 @endif

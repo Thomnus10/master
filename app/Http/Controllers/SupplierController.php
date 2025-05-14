@@ -27,13 +27,13 @@ class SupplierController extends Controller
         // Validate the incoming request
         $request->validate([
             'name' => 'required|string|max:255',
-            'phone' => 'required|numeric',
+            'contact' => 'required|numeric',
         ]);
 
         // Create a new supplier
         Supplier::create([
             'name' => $request->name,
-            'phone' => $request->phone,
+            'contact' => $request->contact,
         ]);
 
         return redirect()->route('suppliers.index')->with('success', 'Supplier created successfully.');
@@ -59,14 +59,14 @@ class SupplierController extends Controller
         // Validate the incoming request
         $request->validate([
             'name' => 'required|string|max:255',
-            'phone' => 'required|numeric',
+            'contact' => 'required|numeric',
         ]);
 
         // Find the supplier and update
         $supplier = Supplier::findOrFail($id);
         $supplier->update([
             'name' => $request->name,
-            'phone' => $request->phone,
+            'contact' => $request->contact,
         ]);
 
         return redirect()->route('admin.inventory')->with('success', 'Supplier updated successfully.');

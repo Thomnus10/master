@@ -1,4 +1,4 @@
-@extends('layout.pos')
+@extends('layouts.pos')
 @section('title', 'Transactions')
 
 @section('content')

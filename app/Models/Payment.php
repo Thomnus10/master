@@ -15,8 +15,8 @@ class Payment extends Model
 
     protected $fillable = [
         'order_id',
-        'user_id',
-        'amount',
+        'employee_id',
+        'total_amount',
         'payment_date',
         'payment_method',
         'payment_reference_number',
@@ -36,8 +36,8 @@ class Payment extends Model
         return $this->belongsTo(Order::class);
     }
 
-    public function user()
+    public function employee()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Employee::class);
     }
 }
